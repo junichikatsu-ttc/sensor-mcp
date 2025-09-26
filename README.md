@@ -11,6 +11,7 @@ $ npm i
 
 #### Claudeの設定例
 1. 以下のファイルを開く
+
 Windws： %APPDATA%\Claude\claude_desktop_config.json
 Mac： ~/Library/Application Support/Claude/claude_desktop_config.json
 
