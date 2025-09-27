@@ -38,12 +38,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               description: "センサー番号（例: jk66302）",
             },
             startTime: {
-              type: "number",
-              description: "開始時刻(ミリ秒Unix)",
+              type: "string",
+              description: "開始時刻(yyyy/mm/dd hh:mm:ss)",
             },
             endTime: {
-              type: "number",
-              description: "終了時刻(ミリ秒Unix)",
+              type: "string",
+              description: "終了時刻(yyyy/mm/dd hh:mm:ss)",
             },
             limit: {
               type: "number",
@@ -62,12 +62,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     throw new Error("Unknown prompt");
   }
 
-  const { no, startTime, endTime, limit=100 } = request.params.arguments as { no: string, startTime: number, endTime: number, limit?: number };
-
+  const { no, startTime, endTime, limit=100 } = request.params.arguments as { no: string, startTime: string, endTime: string, limit?: number };
+  const startTimeUnix = new Date(startTime.replace(/-/g, "/")).getTime();
+  const endTimeUnix = new Date(endTime.replace(/-/g, "/")).getTime();
   const url = new URL(BASE_URL);
   url.searchParams.set("no", no);
-  url.searchParams.set("startTime", String(startTime));
-  url.searchParams.set("endTime", String(endTime));
+  url.searchParams.set("startTime", String(startTimeUnix));
+  url.searchParams.set("endTime", String(endTimeUnix));
   url.searchParams.set("limit", String(limit));
 
     try {
